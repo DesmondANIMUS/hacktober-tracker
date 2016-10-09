@@ -5,7 +5,7 @@ const search = require('../elements/search')
 const pr = require('../elements/pr')
 const progressBar = require('../elements/progress')
 const style = require('../assets/css')
-
+var app = express();
 function user (state, prev, send) {
 
   const progress = state.api.pull_requests.length > 4 ? 4 : state.api.pull_requests.length
@@ -26,6 +26,17 @@ function user (state, prev, send) {
       </div>
     </div>
   `
+}
+
+// Development error handler that will print stactrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 }
 
 module.exports = user
